@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using BookInventory.Data;
+using Microsoft.EntityFrameworkCore;
+
+using BookInventoryApp;  // Replace with the actual namespace where AppDbContext is defined
+
+namespace BookInventory
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddSingleton<WeatherForecastService>();
+            services.AddControllersWithViews(); 
+            services.AddHttpClient("LocalApi", client => client.BaseAddress = new Uri("https://localhost:5001/"));   
+
+             // Retrieve the connection string from configuration
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("DefaultConnection string is not found in the configuration.");
+            }
+
+            // Configure DbContext with SQL Server using the retrieved connection string
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            
+            app.UseStaticFiles();
+
+            app.UseRouting();
+            
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapBlazorHub();      // Map routes to your MVC controllers
+               endpoints.MapBlazorHub();      // Map the Blazor Server SignalR hub
+                endpoints.MapFallbackToPage("/_Host");
+            });
+        }
+    }
+}
