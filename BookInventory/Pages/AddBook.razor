@@ -1,112 +1,82 @@
-
-@page "/add-book"
-@inject iBookServices BookService
+@page "/addbook"
+@page "/addbook/{SetHashCode:int}"
 @inject NavigationManager NavigationManager
+@inject iBookServices  bookService
+@inject StateContainer stateContainer
 @using BookInventoryApp
 
-<SfDialog Target="#target" Width="500px" @bind-Visible="@Visibility" AllowPrerender="true" IsModal="true">
-    <DialogTemplates>
-        <Header>@PageTitle</Header>
-        <Content>
-            <div class="col-md-12 mt-0 mb-1 alert alert-danger" style="visibility:@DisplayErrors">
-                <ul class="list-group">
-                    
-@foreach
- 
-(
-Error
- er 
-in
- Errors
-)
+<div id="target">
 
-                    
-{
-
-                        
-<
-li
->
-<
-b
->
-@
-er
-.
-Property
-</
-b
->
-: 
-@
-er
-.
-Message
-</
-li
->
-
-                    
-}
-
-                </ul>
-            </div>
-            <div class="card mt-0">
-                <div class="card-header">
-                    <button class="float-end bg-light border-0" @onclick="CloseDialog"><span class="e-icons e-close"></span></button>
+    <SfDialog Target="#target" Width="500px" @bind-Visible="Visibility" AllowPrerender="true" IsModal="true">
+        <DialogTemplates>
+            <Header> @PageTitle</Header>
+            <Content>
+                <div class="col-md-12 mt-0 mb-1 alert alert-danger" style="visibility:@DisplayErrors">
+                    <ul class="list-group">
+                        @foreach (Error er in Errors)
+                        {
+                            <li><b>@er.Property</b>: @er.Message</li>
+                        }
+                    </ul>
                 </div>
-                
-                <EditForm Model="@book" OnValidSubmit="HandleSave">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="title" class="form-label">Title</label>
-                            <InputText @bind-Value="book.Title" class="form-control"></InputText>
-                            <ValidationMessage For="@(() => book.Title)" />
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="description" class="form-label">Description</label>
-                            <InputTextArea @bind-Value="book.Description" class="form-control"></InputTextArea>
-                            <ValidationMessage For="@(() => book.Description)" />
-                        </div>
-                        <hr />
-                        <div class="form-group mt-2">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <label for="file" class="form-label">Image</label> <br />
-                                    <InputFile id="file" OnChange="@OnFileChange"></InputFile>
-                                    <ValidationMessage For="@(() => book.Image)" />
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="preview" class="form-label">Image Preview</label> <br />
-                                    <img src="@book.Image" width="80" height="50" id="preview" />
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
+                <div class="card mt-0">
+                    <div class="card-header">
+                        <button class="float-end bg-light border-0" @onclick="CloseDialog"><SfIcon IconCss="e-icons e-close" @onclick="CloseDialog"></SfIcon></button>
                     </div>
-                </EditForm>
-            </div>
-        </Content>
-    </DialogTemplates>
-    <DialogButtons>
-        <DialogButton Content="Save" OnClick="HandleSave" CssClass="e-primary"></DialogButton>
-    </DialogButtons>
-</SfDialog>
 
+                    <EditForm Model="book" OnValidSubmit="HandleSave">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="title" class="form-label">Title</label>
+                                <InputText @bind-Value="book.Title" class="form-control"></InputText>
+                                <ValidationMessage For="(()=> book.Title)" />
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="title" class="form-label">Description</label>
+                                <InputTextArea @bind-Value="book.Description" class="form-control"></InputTextArea>
+                                <ValidationMessage For="(()=> book.Description)" />
+                            </div>
+                            <hr />
+                            <div class="form-group mt-2">
+                                <div class="row">
+                                    <div class="col-md -7">
+                                        <label for="file" class="form-label">Image</label> <br />
+                                        <InputFile id="file" OnChange="@OnFileChange"></InputFile>
+                                        <ValidationMessage For="(()=> book.Image)" />
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label for="file" class="form-label">Image</label> <br />
+                                        <img src="@book.Image" width="80" height="50" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                        </div>
+                    </EditForm>
+                </div>
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton Content="Save" OnClick="HandleSave" CssClass="e-primary"></DialogButton>
+        </DialogButtons>
+    </SfDialog>
+</div>
 <MakeToast ToastContent="@ToastContent" Title="@Title" Display="@Display"></MakeToast>
-
 <style>
     #target {
         height: 590px;
     }
 </style>
-@code{
-     [Parameter] public int SetHashCode { get; set; }
-     private string PageTitle = string.Empty;
-     private string ToastContent = string.Empty;
-     private string Title = string.Empty;
+
+@code {
+    [Parameter] public int SetHashCode { get; set; }
+    private string PageTitle = string.Empty;
+
+    private string ToastContent = string.Empty;
+    private string Title = string.Empty;
     private bool Display;
 
     private string DisplayErrors = "hidden";

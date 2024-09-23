@@ -72,30 +72,6 @@
             "Syncfusion.Blazor": {
               "target": "Package",
               "version": "[27.1.48, )"
-            },
-            "Syncfusion.Blazor.Buttons": {
-              "target": "Package",
-              "version": "[27.1.48, )"
-            },
-            "Syncfusion.Blazor.Grid": {
-              "target": "Package",
-              "version": "[27.1.48, )"
-            },
-            "Syncfusion.Blazor.Navigations": {
-              "target": "Package",
-              "version": "[27.1.48, )"
-            },
-            "Syncfusion.Blazor.Popups": {
-              "target": "Package",
-              "version": "[27.1.48, )"
-            },
-            "Syncfusion.Blazor.Spinner": {
-              "target": "Package",
-              "version": "[27.1.48, )"
-            },
-            "Syncfusion.Blazor.Themes": {
-              "target": "Package",
-              "version": "[27.1.48, )"
             }
           },
           "imports": [

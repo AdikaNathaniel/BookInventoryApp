@@ -16,12 +16,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Syncfusion.Blazor" Version="27.1.48" />
-    <PackageReference Include="Syncfusion.Blazor.Spinner" Version="27.1.48" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="27.1.48" />
-    <PackageReference Include="Syncfusion.Blazor.Popups" Version="27.1.48" />
-    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="27.1.48" />
-    <PackageReference Include="Syncfusion.Blazor.Grid" Version="27.1.48" />
-    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="27.1.48" />
   </ItemGroup>
 
 </Project>

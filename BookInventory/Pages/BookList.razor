@@ -10,8 +10,6 @@
 @using BookInventoryApp
 @using System.Net.Http.Json;
 
-
-
 @if (DatabaseBookList.Count > 0)
 {
     <SfGrid DataSource="@DatabaseBookList" AllowFiltering="true" AllowGrouping="true" AllowPaging="true" AllowReordering="true" AllowSorting="true" @ref="BookDataGrid">
